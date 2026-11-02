@@ -1,5 +1,5 @@
 // TablaQuiz: quizzes de la tabla periódica. Funciona solo o como plugin de ZenBan (estado dentro del objeto).
-const APP_VERSION = '1.0';
+const APP_VERSION = '1.1';
 const IN_ZENBAN = !!(window.ZenBanPlugin && ZenBanPlugin.inZenBan);
 const $ = (s, r = document) => r.querySelector(s);
 const hoyStr = () => new Date().toISOString().slice(0, 10);
@@ -19,12 +19,13 @@ const MODOS = [
 const NOMBRE_MODO = Object.fromEntries(MODOS.map(m => [m.id, m.nombre]));
 const ALIAS = { Zn: ['cinc'], W: ['tungsteno'], I: ['iodo'], Kr: ['criptón'], Es: ['einsteinio'], S: ['sulfuro'] };
 
+let temaHost = null;
 let readOnly = false, pluginReady = !IN_ZENBAN;
 let estado = estadoInicial();
 let juego = null, vista = 'tabla', catFiltro = null, selZ = null, tAuto = null;
 
 function estadoInicial() {
-  return { v: 1, stats: {}, best: {}, total: { ok: 0, n: 0 }, dias: {}, ajustes: { rango: 20, largo: 10, sonido: true } };
+  return { v: 1, stats: {}, best: {}, total: { ok: 0, n: 0 }, dias: {}, ajustes: { rango: 20, largo: 10, sonido: true, estilo: IN_ZENBAN ? 'zenban' : 'propio' } };
 }
 
 // ---------- almacenamiento ----------
@@ -85,6 +86,17 @@ function tono(ok) {
 function toast(msg) {
   const t = $('#toast'); t.textContent = msg; t.classList.add('show');
   clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+// ---------- estilo: ZenBan (sigue su tema) o propio ----------
+function aplicarEstilo() {
+  const r = document.documentElement, z = estado.ajustes.estilo === 'zenban';
+  r.dataset.estilo = z ? 'zenban' : 'propio';
+  const tema = temaHost || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  if (z) r.dataset.theme = tema; else delete r.dataset.theme;
+  const b = $('#btnEstilo');
+  b.textContent = z ? '🎨 Estilo: ZenBan' : '🎨 Estilo: propio';
+  b.title = z ? 'Usa los colores y el tema de ZenBan. Toca para usar el estilo propio de TablaQuiz' : 'Usa el estilo propio de TablaQuiz. Toca para usar el de ZenBan';
 }
 
 // ---------- navegación ----------
@@ -357,6 +369,7 @@ function pintarProgreso() {
 
 // ---------- eventos globales ----------
 document.querySelectorAll('.tabs button').forEach(b => b.onclick = () => ir(b.dataset.tab));
+$('#btnEstilo').onclick = () => { estado.ajustes.estilo = estado.ajustes.estilo === 'zenban' ? 'propio' : 'zenban'; aplicarEstilo(); guardar(); };
 document.querySelector('[data-act="salir"]').onclick = () => ir('jugar');
 document.addEventListener('keydown', (ev) => {
   if (vista !== 'juego' || !juego || ev.ctrlKey || ev.metaKey || ev.altKey) return;
@@ -374,8 +387,9 @@ if (IN_ZENBAN) {
   ZenBanPlugin.onInit(({ state, theme, readOnly: ro }) => {
     readOnly = !!ro;
     $('#readonlyBar').hidden = !readOnly;
-    if (theme) document.documentElement.dataset.theme = theme === 'light' ? 'light' : 'dark';
+    if (theme) temaHost = theme === 'light' ? 'light' : 'dark';
     estado = fusionar(state);
+    aplicarEstilo();
     pluginReady = true;
     ZenBanPlugin.setTitle(`TablaQuiz · ${dominados()}/118`);
     if (vista !== 'juego') ir(vista);
@@ -383,5 +397,6 @@ if (IN_ZENBAN) {
 } else {
   estado = fusionar(cargarLocal());
 }
+aplicarEstilo();
 ir('tabla');
 if ('serviceWorker' in navigator && !IN_ZENBAN && location.protocol.startsWith('http')) navigator.serviceWorker.register('sw.js').catch(() => {});

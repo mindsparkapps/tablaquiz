@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -8,7 +8,7 @@
   <title>TablaQuiz</title>
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css?v=1">
+  <link rel="stylesheet" href="styles.css?v=2">
 </head>
 <body>
 <header class="top">
@@ -18,6 +18,7 @@
     <button role="tab" data-tab="jugar" aria-selected="false">Jugar</button>
     <button role="tab" data-tab="progreso" aria-selected="false">Progreso</button>
   </nav>
+  <button class="estilo" id="btnEstilo" type="button"></button>
   <span class="app-version" id="appVersion"></span>
 </header>
 <div class="readonly-bar" id="readonlyBar" hidden>Solo puedes ver este tablero: tu progreso no se guarda.</div>
@@ -62,8 +63,8 @@
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="zenban-plugin-sdk.js?v=1"></script>
-<script src="elements.js?v=1"></script>
-<script src="app.js?v=1"></script>
+<script src="zenban-plugin-sdk.js?v=2"></script>
+<script src="elements.js?v=2"></script>
+<script src="app.js?v=2"></script>
 </body>
 </html>
