@@ -59,7 +59,7 @@ main { padding: 12px; max-width: 1100px; margin: 0 auto; }
 .btn:disabled { opacity: .5; cursor: default; }
 
 /* ---------- tabla ---------- */
-.legend { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px; }
 .legend button { display: flex; align-items: center; gap: 6px; border: 1px solid var(--line); background: var(--card); border-radius: 999px; padding: 3px 10px; font-size: .78rem; }
 .legend button i { width: 12px; height: 12px; border-radius: 3px; border: 1px solid rgba(0,0,0,.25); }
 .legend button[aria-pressed="true"] { outline: 2px solid var(--accent); }
@@ -73,7 +73,7 @@ main { padding: 12px; max-width: 1100px; margin: 0 auto; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .el { color: #f1f5f4; } }
 .el .n { align-self: flex-start; margin-left: 7%; font-size: 1.8cqw; opacity: .8; }
 .el .s { font-weight: 700; font-size: 3cqw; }
-.el .nm { font-size: 1.45cqw; opacity: .8; white-space: nowrap; overflow: hidden; text-overflow: clip; max-width: 100%; }
+.el .nm { font-size: 1.45cqw; opacity: .85; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 96%; letter-spacing: -.02em; }
 .el.dim { opacity: .35; }
 .el.sel { outline: 2px solid var(--accent); z-index: 1; }
 .el.vacio .n, .el.vacio .s, .el.vacio .nm { display: none; }
@@ -84,16 +84,22 @@ main { padding: 12px; max-width: 1100px; margin: 0 auto; }
 .el.mal { background: var(--bad) !important; color: #fff; }
 .hueco { grid-row: 6; display: flex; align-items: center; justify-content: center; font-size: 1.6cqw; color: var(--muted); }
 
-.ficha { margin-top: 12px; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px; }
-.ficha-top { display: flex; gap: 14px; align-items: center; }
-.ficha-cuadro { width: 84px; height: 92px; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #14201e; flex: none; }
+.ficha { margin-bottom: 10px; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 10px 14px; min-height: 84px; display: flex; align-items: center; }
+.ficha > .muted { margin: 0; }
+.ficha-top { display: flex; gap: 6px 16px; align-items: center; flex-wrap: wrap; width: 100%; }
+.ficha-cuadro { width: 64px; height: 68px; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #14201e; flex: none; }
 :root[data-theme="dark"] .ficha-cuadro { color: #f1f5f4; }
-.ficha-cuadro b { font-size: 2.2rem; line-height: 1; }
-.ficha-cuadro span { font-size: .8rem; }
-.ficha dl { display: grid; grid-template-columns: auto 1fr; gap: 2px 12px; margin: 10px 0 0; }
-.ficha dt { color: var(--muted); }
-.ficha dd { margin: 0; font-weight: 600; }
-.ficha h3 { font-size: 1.3rem; }
+.ficha-cuadro b { font-size: 1.7rem; line-height: 1; }
+.ficha-cuadro span { font-size: .72rem; }
+.ficha-nombre { min-width: 90px; }
+.ficha-nombre span { font-size: .85rem; }
+.ficha h3 { font-size: 1.2rem; }
+/* los datos se acomodan en horizontal: de a dos por columna */
+.datos { display: grid; grid-template-rows: repeat(2, auto); grid-auto-flow: column; gap: 4px 22px; margin-left: auto; }
+.dato { display: flex; flex-direction: column; line-height: 1.2; }
+.dato span { font-size: .72rem; color: var(--muted); }
+.dato b { font-size: .95rem; }
+.legend { margin: 10px 0 0; }
 
 /* ---------- jugar ---------- */
 .rango { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }

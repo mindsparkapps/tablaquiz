@@ -1,5 +1,5 @@
-﻿// TablaQuiz: quizzes de la tabla periódica. Funciona solo o como plugin de ZenBan (estado dentro del objeto).
-const APP_VERSION = '1.3';
+// TablaQuiz: quizzes de la tabla periódica. Funciona solo o como plugin de ZenBan (estado dentro del objeto).
+const APP_VERSION = '1.4';
 const IN_ZENBAN = !!(window.ZenBanPlugin && ZenBanPlugin.inZenBan);
 const $ = (s, r = document) => r.querySelector(s);
 const hoyStr = () => new Date().toISOString().slice(0, 10);
@@ -122,7 +122,9 @@ function construirTabla(cont, { alClick, estilo, vacia, fuera } = {}) {
     b.style.gridRow = e.fila; b.style.gridColumn = e.col;
     if (!vacia) {
       b.style.background = estilo ? estilo(e) : `var(--c-${e.cat})`;
-      b.innerHTML = `<span class="n">${e.z}</span><span class="s">${e.simbolo}</span><span class="nm">${e.nombre}</span>`;
+      // los nombres largos se achican para caber en el casillero (el nombre completo está en el título)
+      const fs = Math.max(1.05, Math.min(1.45, 4.9 / (e.nombre.length * 0.56)));
+      b.innerHTML = `<span class="n">${e.z}</span><span class="s">${e.simbolo}</span><span class="nm" style="font-size:${fs.toFixed(2)}cqw">${e.nombre}</span>`;
       b.title = `${e.nombre} (${e.z})`;
     } else {
       b.setAttribute('aria-label', `Fila ${e.fila > 7 ? e.fila - 3 : e.fila}, columna ${e.col}`);
@@ -161,12 +163,13 @@ function pintarFicha() {
   if (!e) { f.innerHTML = '<p class="muted">Toca un elemento para ver su ficha.</p>'; return; }
   const masa = e.masa.startsWith('[') ? `${e.masa.slice(1, -1)} (isótopo más estable)` : e.masa;
   const t = tasa(e.z), s = estado.stats[e.z];
+  const dato = (k, v) => `<div class="dato"><span>${k}</span><b>${v}</b></div>`;
   f.innerHTML = `<div class="ficha-top">
     <div class="ficha-cuadro" style="background:var(--c-${e.cat})"><span>${e.z}</span><b>${e.simbolo}</b></div>
-    <div><h3>${e.nombre}</h3><span class="muted">${CATEGORIAS[e.cat].nombre}</span></div></div>
-    <dl><dt>Número atómico</dt><dd>${e.z}</dd><dt>Masa atómica</dt><dd>${masa}</dd>
-    <dt>Periodo</dt><dd>${e.periodo}</dd><dt>Grupo</dt><dd>${e.grupo ?? 'Bloque f (' + (e.cat === 'lantanido' ? 'lantánidos' : 'actínidos') + ')'}</dd>
-    <dt>Tu acierto</dt><dd>${s ? `${Math.round(t * 100)} % (${s.ok}/${s.n})` : 'Aún sin preguntas'}</dd></dl>`;
+    <div class="ficha-nombre"><h3>${e.nombre}</h3><span class="muted">${CATEGORIAS[e.cat].nombre}</span></div>
+    <div class="datos">${dato('Número atómico', e.z)}${dato('Masa atómica', masa)}
+    ${dato('Periodo', e.periodo)}${dato('Grupo', e.grupo ?? (e.cat === 'lantanido' ? 'Lantánidos' : 'Actínidos'))}
+    ${dato('Tu acierto', s ? `${Math.round(t * 100)} % (${s.ok}/${s.n})` : 'Sin preguntas')}</div></div>`;
 }
 
 // ---------- menú de juegos ----------
