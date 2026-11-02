@@ -154,5 +154,4 @@ select, input[type="text"] { font: inherit; padding: 7px 10px; border-radius: 10
 @media (max-width: 480px) {
   .tabs { margin-left: 0; width: 100%; }
   .tabs button { flex: 1; }
-  .app-version { display: none; }
 }
