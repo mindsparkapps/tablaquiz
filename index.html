@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="TablaQuiz: aprende la tabla periódica con quizzes de símbolos, nombres, números y ubicación.">
+  <meta name="theme-color" content="#0f766e">
+  <title>TablaQuiz</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css?v=1">
+</head>
+<body>
+<header class="top">
+  <div class="brand"><span class="logo">⚗️</span><div><h1>TablaQuiz</h1><small>Tabla periódica</small></div></div>
+  <nav class="tabs" role="tablist" aria-label="Secciones">
+    <button role="tab" data-tab="tabla" aria-selected="true">Tabla</button>
+    <button role="tab" data-tab="jugar" aria-selected="false">Jugar</button>
+    <button role="tab" data-tab="progreso" aria-selected="false">Progreso</button>
+  </nav>
+  <span class="app-version" id="appVersion"></span>
+</header>
+<div class="readonly-bar" id="readonlyBar" hidden>Solo puedes ver este tablero: tu progreso no se guarda.</div>
+
+<main>
+  <!-- TABLA -->
+  <section class="view" id="v-tabla">
+    <div class="legend" id="legend"></div>
+    <div class="tabla-wrap"><div class="tabla" id="tabla"></div></div>
+    <div class="ficha" id="ficha"><p class="muted">Toca un elemento para ver su ficha.</p></div>
+  </section>
+
+  <!-- JUGAR: menú -->
+  <section class="view" id="v-jugar" hidden>
+    <h2>Elige un juego</h2>
+    <div class="rango">
+      <label>Elementos
+        <select id="rango"></select>
+      </label>
+      <label>Preguntas
+        <select id="largo"><option value="10">10</option><option value="20">20</option><option value="0">Sin fin</option></select>
+      </label>
+    </div>
+    <div class="modos" id="modos"></div>
+  </section>
+
+  <!-- JUEGO -->
+  <section class="view" id="v-juego" hidden>
+    <div class="juego-top">
+      <button class="btn ghost" type="button" data-act="salir">← Salir</button>
+      <div class="marcador" id="marcador"></div>
+    </div>
+    <div class="barra"><i id="barra"></i></div>
+    <div id="pregunta"></div>
+  </section>
+
+  <!-- PROGRESO -->
+  <section class="view" id="v-progreso" hidden>
+    <div id="progreso-body"></div>
+  </section>
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="zenban-plugin-sdk.js?v=1"></script>
+<script src="elements.js?v=1"></script>
+<script src="app.js?v=1"></script>
+</body>
+</html>

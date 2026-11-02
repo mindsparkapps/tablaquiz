@@ -1,0 +1,16 @@
+{
+  "id": "/tablaquiz",
+  "name": "TablaQuiz",
+  "short_name": "TablaQuiz",
+  "description": "Aprende la tabla periódica con quizzes.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0f1716",
+  "theme_color": "#0f766e",
+  "lang": "es",
+  "categories": ["education"],
+  "icons": [
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

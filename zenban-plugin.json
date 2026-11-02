@@ -1,0 +1,8 @@
+{
+  "name": "TablaQuiz",
+  "icon": "⚗️",
+  "description": "Aprende la tabla periódica con quizzes de símbolos, nombres, números y ubicación",
+  "entry": "index.html",
+  "width": 640,
+  "height": 600
+}
