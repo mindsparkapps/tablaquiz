@@ -1,5 +1,5 @@
-﻿const CACHE_NAME = 'tablaquiz-v3';
-const ASSETS = ['./', './index.html', './styles.css?v=3', './elements.js?v=3', './app.js?v=3', './zenban-plugin-sdk.js?v=3', './manifest.json', './icons/icon.svg'];
+const CACHE_NAME = 'tablaquiz-v4';
+const ASSETS = ['./', './index.html', './styles.css?v=4', './elements.js?v=4', './app.js?v=4', './zenban-plugin-sdk.js?v=4', './manifest.json', './icons/icon.svg'];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(CACHE_NAME).then((c) => c.addAll(ASSETS)).catch(() => {}));

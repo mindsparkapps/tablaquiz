@@ -1,5 +1,5 @@
 ﻿// TablaQuiz: quizzes de la tabla periódica. Funciona solo o como plugin de ZenBan (estado dentro del objeto).
-const APP_VERSION = '1.2';
+const APP_VERSION = '1.3';
 const IN_ZENBAN = !!(window.ZenBanPlugin && ZenBanPlugin.inZenBan);
 const $ = (s, r = document) => r.querySelector(s);
 const hoyStr = () => new Date().toISOString().slice(0, 10);
@@ -93,11 +93,11 @@ function aplicarEstilo() {
   const r = document.documentElement, z = estado.ajustes.estilo === 'zenban';
   r.dataset.estilo = z ? 'zenban' : 'propio';
   const tema = temaHost || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-  if (z) r.dataset.theme = tema; else delete r.dataset.theme;
-  document.querySelectorAll('.estilo').forEach(b => {
-    b.textContent = z ? '🎨 ZenBan' : '🎨 Propio';
-    b.title = z ? 'Estilo de ZenBan. Toca para usar el estilo propio de TablaQuiz' : 'Estilo propio de TablaQuiz. Toca para usar el de ZenBan';
-  });
+  r.dataset.theme = z ? tema : 'light'; // el estilo propio es el claro de siempre, no sigue el tema de ZenBan ni del sistema
+  const label = z ? '🎨 ZenBan' : '🎨 Propio';
+  const title = z ? 'Estilo de ZenBan. Toca para usar el estilo propio de TablaQuiz' : 'Estilo propio de TablaQuiz. Toca para usar el de ZenBan';
+  document.querySelectorAll('.estilo').forEach(b => { b.textContent = label; b.title = title; });
+  if (IN_ZENBAN && ZenBanPlugin.setBarButton) ZenBanPlugin.setBarButton(label, title); // también en la barra de la ventana, junto a ⟳
 }
 
 // ---------- navegación ----------
@@ -370,7 +370,9 @@ function pintarProgreso() {
 
 // ---------- eventos globales ----------
 document.querySelectorAll('.tabs button').forEach(b => b.onclick = () => ir(b.dataset.tab));
-document.querySelectorAll('.estilo').forEach(b => b.onclick = () => { estado.ajustes.estilo = estado.ajustes.estilo === 'zenban' ? 'propio' : 'zenban'; aplicarEstilo(); guardar(); });
+function cambiarEstilo() { estado.ajustes.estilo = estado.ajustes.estilo === 'zenban' ? 'propio' : 'zenban'; aplicarEstilo(); guardar(); }
+document.querySelectorAll('.estilo').forEach(b => b.onclick = cambiarEstilo);
+if (IN_ZENBAN && ZenBanPlugin.onBarClick) ZenBanPlugin.onBarClick(cambiarEstilo);
 document.querySelector('[data-act="salir"]').onclick = () => ir('jugar');
 document.addEventListener('keydown', (ev) => {
   if (vista !== 'juego' || !juego || ev.ctrlKey || ev.metaKey || ev.altKey) return;
